@@ -1,0 +1,17 @@
+@import 'sc-ecommerce/styles/forms.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  padding-bottom: 100px; /* Footer'ın altında boşluk bırakmak için */
+}
+
+main {
+  min-height: calc(100vh - 60px); /* Header ve Footer arasında boşluk ayarlaması */
+  padding: 20px;
+}

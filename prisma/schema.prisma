@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Page {
+  id             Int              @id @default(autoincrement())
+  model          String
+  tableID        Int
+  PageComponents PageComponents[]
+  Brand          Brand[]
+  Category       Category[]
+  Product        Product[]
+}
+
+model Component {
+  id             Int              @id @default(autoincrement())
+  title          String
+  properties     Json
+  PageComponents PageComponents[]
+}
+
+model PageComponents {
+  id          Int       @id @default(autoincrement())
+  page        Page      @relation(fields: [pageId], references: [id])
+  pageId      Int
+  component   Component @relation(fields: [componentId], references: [id])
+  componentId Int
+}
+
+model Category {
+  id             Int       @id @default(autoincrement())
+  name           String
+  products       Product[]
+  page           Page?     @relation(fields: [pageId], references: [id])
+  pageId         Int?
+  masterCategory Int?
+  logo           String?
+}
+
+model Brand {
+  id          Int       @id @default(autoincrement())
+  name        String
+  products    Product[]
+  page        Page?     @relation(fields: [pageId], references: [id])
+  pageId      Int?
+  logo        String
+  description String
+}
+
+model Product {
+  id          Int                @id @default(autoincrement())
+  name        String
+  category    Category           @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  brand       Brand              @relation(fields: [brandId], references: [id])
+  brandId     Int
+  variations  ProductVariation[]
+  images      ProductImage[]
+  description String
+  page        Page?              @relation(fields: [pageId], references: [id])
+  pageId      Int?
+  createdAt   DateTime           @default(now())
+}
+
+model ProductVariation {
+  id         Int            @id @default(autoincrement())
+  product    Product        @relation(fields: [productId], references: [id])
+  productId  Int
+  sku        String // Ürün varyasyonunun stok kodu
+  price      Float
+  stock      Int // Stok miktarı
+  attributes Json // Varyasyon özelliklerini JSON olarak saklıyoruz
+  images     ProductImage[]
+}
+
+model ProductImage {
+  id          Int               @id @default(autoincrement())
+  url         String
+  product     Product?          @relation(fields: [productId], references: [id])
+  productId   Int
+  variation   ProductVariation? @relation(fields: [variationId], references: [id])
+  variationId Int
+  isMain      Boolean // Ana görsel mi?
+}
