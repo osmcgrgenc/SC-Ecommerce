@@ -1,0 +1,82 @@
+// Renk Paleti
+$primary-color: #a8dadc;
+$secondary-color: #457b9d;
+$accent-color: #f1faee;
+$text-color: #1d3557;
+$bg-color: #f0f4f8;
+
+body {
+  background-color: $bg-color;
+  color: $text-color;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar {
+  background-color: $primary-color;
+  color: $text-color;
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    
+    li {
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 0.5rem;
+        font-size: 1.5rem;
+      }
+
+      a {
+        color: $text-color;
+        text-decoration: none;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+.navbar {
+  display: none;
+  background-color: $primary-color;
+  padding: 1rem;
+  justify-content: space-between;
+  align-items: center;
+
+  .hamburger-menu {
+    display: block;
+    font-size: 2rem;
+  }
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .navbar {
+    display: flex;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}

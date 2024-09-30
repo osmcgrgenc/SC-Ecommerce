@@ -93,3 +93,56 @@ model ProductImage {
   variationId Int
   isMain      Boolean // Ana görsel mi?
 }
+
+model BlogPost {
+  id          Int          @id @default(autoincrement())
+  title       String
+  content     String        // Blog içeriği
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  author      BlogAuthor    @relation(fields: [authorId], references: [id])
+  authorId    Int
+  categories  BlogCategory[] @relation("PostCategories")
+  page        CMSPage?      @relation(fields: [pageId], references: [id])
+  pageId      Int?
+
+  CMSPage CMSPage[] @relation("PostPages")
+}
+
+model BlogAuthor {
+  id        Int          @id @default(autoincrement())
+  name      String
+  bio       String?
+  posts     BlogPost[]
+}
+
+model BlogCategory {
+  id        Int         @id @default(autoincrement())
+  name      String
+  posts     BlogPost[]  @relation("PostCategories")
+}
+
+model CMSPage {
+  id             Int           @id @default(autoincrement())
+  title          String
+  slug           String        @unique
+  content        String?
+  elements       CMSElement[]  @relation("PageElements")
+  blogPosts      BlogPost[]    @relation("PostPages")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  CMSElement CMSElement[]
+
+  BlogPost BlogPost[]
+}
+
+model CMSElement {
+  id          Int        @id @default(autoincrement())
+  type        String     // Element türü (örn: text, image, video, vb.)
+  content     Json       // JSON formatında dinamik içerik
+  page        CMSPage    @relation(fields: [pageId], references: [id])
+  pageId      Int
+
+  CMSPage CMSPage[] @relation("PageElements")
+}
