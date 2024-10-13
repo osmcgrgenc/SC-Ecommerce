@@ -18,13 +18,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-export function UserLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <Header />
-      <main>{children}</main>
-      <Footer />
-    </>
-  );
-}
